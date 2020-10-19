@@ -1,4 +1,4 @@
-from pyevo.bp.strategies import \
+from pyevo.bp.population_strategies import \
     InitializationStrategy, TerminationStrategy, BacterialMutationStrategy, InfectionStrategy
 
 
