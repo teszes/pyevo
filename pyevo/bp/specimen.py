@@ -5,13 +5,13 @@ from copy import deepcopy
 from operator import attrgetter
 from random import choice, randint
 
-from pyevo.bp.specimen_stranegies import TreeGenerator
+from pyevo.bp.specimen_strategies import TreeGenerator
 
 
 class Specimen:
     @property
     def fitness(self):
-        self._fitness = self._fitness or self._submit(self._root(self._task))
+        self._fitness = self._fitness or self._fitness_function(self._root(self._task))
         return self._fitness
 
     @property
@@ -22,11 +22,11 @@ class Specimen:
     def root(self):
         return self._root
 
-    def __init__(self, submit, task=None, tree_generator=TreeGenerator()):
+    def __init__(self, functionals, terminals, fitness_function, task=None, tree_generator=TreeGenerator()):
         self._fitness = None
         self._root = tree_generator()
         self._task = task
-        self._submit = submit
+        self._fitness_function = fitness_function
 
     def bacterial_mutation(self, clone_count):
         Attempt = namedtuple("Attempt", ["tree", "fitness"])

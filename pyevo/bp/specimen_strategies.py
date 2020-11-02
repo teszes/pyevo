@@ -6,38 +6,35 @@ from pyevo.bp.nodes import FunctionalNode, TerminalNode, Node
 class TreeGenerator:
 
     def __init__(self,
-                 functionals: tuple = None,
-                 terminals: tuple = None,
                  max_width: int = None,
                  max_depth: int = None,
                  max_nodes: int = None,
                  max_children: int = None
                  ):
-        self.functionals = functionals
-        self.terminals = terminals
         self.max_width = max_width
         self.max_depth = max_depth
         self.max_nodes = max_nodes
         self.max_children = max_children
 
-    def __call__(self) -> Node:
-        # TODO Check type hinting for classes
-        if self.functionals is None and self.terminals is None:
-            raise ValueError("Tree can not be generated without nodes")
+    def __call__(self,
+                 functionals: tuple = None,
+                 terminals: tuple = None) -> Node:
 
         parentable_functionals = list()
 
         node_count = int(1)
         level_populations = {1: 1}
 
-        root = choice(self.functionals + self.terminals)()
+        root_function = choice(functionals + terminals)
+        root = FunctionalNode(root_function) if root_function in functionals else TerminalNode(root_function)
 
         if isinstance(root, FunctionalNode):
             parentable_functionals.append(root)
 
         while parentable_functionals:
             parent = choice(parentable_functionals)
-            child = choice(self.functionals + self.terminals)()
+            child_function = choice(functionals + terminals)
+            child = FunctionalNode(child_function) if child_function in functionals else TerminalNode(child_function)
 
             if (self.max_width and level_populations[parent.level + 1] < self.max_width) \
                     and (self.max_depth and parent.level < self.max_depth - 1 or not self.max_depth) \

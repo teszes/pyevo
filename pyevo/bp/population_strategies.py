@@ -10,9 +10,14 @@ Result = namedtuple("Result", ["generation", "min_fitness", "max_fitness", "avg_
 class InitializationStrategy:
     def __init__(self, population_size=100):
         self._population_size = population_size
+        self.functionals = None
+        self.terminals = None
+        self.fitness_function = None
+        self.task = None
 
     def __call__(self):
-        return tuple(Specimen() for _ in range(self._population_size))
+        return tuple(Specimen(self.functionals, self.terminals, self.fitness_function, self.task)
+                     for _ in range(self._population_size))
 
 
 class TerminationStrategy:

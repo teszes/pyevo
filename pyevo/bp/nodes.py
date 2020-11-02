@@ -16,6 +16,10 @@ class Node:
         return family
 
     @property
+    def function(self):
+        return self._function
+
+    @property
     def level(self):
         return self._level
 
@@ -27,15 +31,12 @@ class Node:
 
     def __init__(self):
         self.parent = None
+        self._function = None
         self._level = 1
         raise ValueError("The Node base class should not be instantiated")
 
-    def __call__(self):
+    def __call__(self, task):
         raise ValueError("Instances of the Node base class should not be called")
-
-
-class Task():
-    pass
 
 
 class FunctionalNode(Node):
@@ -55,7 +56,7 @@ class FunctionalNode(Node):
         child.parent = self
         self._children += (child,)
 
-    def __init__(self):
+    def __init__(self, function):
         try:
             super().__init__()
         except ValueError as exc:
@@ -63,26 +64,31 @@ class FunctionalNode(Node):
                 raise
 
         self._children = tuple()
+        self._function = function
 
-    def __call__(self):
+    def __call__(self, task):
         try:
-            super().__call__()
+            super().__call__(task)
         except ValueError as exc:
             if str(exc) != "Instances of the Node base class should not be called":
                 raise
+        return self._function(task, [child(task) for child in self._children])
 
 
 class TerminalNode(Node):
-    def __init__(self):
+    def __init__(self, function):
         try:
             super().__init__()
         except ValueError as exc:
             if str(exc) != "The Node base class should not be instantiated":
                 raise
 
-    def __call__(self):
+        self._function = function
+
+    def __call__(self, task):
         try:
-            super().__call__()
+            super().__call__(task)
         except ValueError as exc:
             if str(exc) != "Instances of the Node base class should not be called":
                 raise
+        return self._function(task)
