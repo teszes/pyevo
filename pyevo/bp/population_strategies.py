@@ -47,8 +47,6 @@ class BacterialMutationStrategy:
 
 
 class InfectionStrategy:
-    # TODO: "A kétszeres előfordulások eliminálása a célbaktérium kódjában. "
-    # https://tud.sze.hu/images/%C3%9ANKP/2017-2018/tanulm%C3%A1nyk%C3%B6tet/UNKP_2018_vagojel_nelkul_225.pdf -230.o
     def __init__(self, infection_count=20):
         self._infection_count = infection_count
 

@@ -1,6 +1,6 @@
 from random import choice, random
 
-from pyevo.bp.nodes import FunctionalNode, TerminalNode
+from pyevo.bp.nodes import FunctionalNode, TerminalNode, Node
 
 
 class TreeGenerator:
@@ -20,7 +20,7 @@ class TreeGenerator:
         self.max_nodes = max_nodes
         self.max_children = max_children
 
-    def __call__(self):
+    def __call__(self) -> Node:
         # TODO Check type hinting for classes
         if self.functionals is None and self.terminals is None:
             raise ValueError("Tree can not be generated without nodes")
