@@ -1,8 +1,10 @@
 from functools import partial
 from multiprocessing import Pool
 
+from pyevo.database.sqlite import SqliteDatabaseConnector
 from pyevo.gym import algorithmic_identity
-from pyevo.bp import bacterial_programming
+from pyevo.algorithms.common import initialize_population
+from pyevo.algorithms.bp import bacterial_programming
 
 PROCESS_POOL_SIZE = 6
 TASK_LENGTH = 10
@@ -26,17 +28,24 @@ functionals = (
 
 
 def run(_):
-    bacterial_programming(
-        fitness_function=validation_model.submit_solution,
-        task=validation_model.task,
-        functionals=functionals,
-        terminals=terminals,
-        population_size=POPULATION_SIZE,
+    database_connector = SqliteDatabaseConnector()
+    bacterial_programming = bacterial_programming(
         max_generations=MAX_GENERATIONS,
         fitness_treshold=FITNESS_TRESHOLD,
         mutation_clone_count=MUTATION_CLONE_COUNT,
-        result_database_path=RESULT_DATABASE_PATH
+        database_connector=database_connector
     )
+
+    population = initialize_population(
+        fitness_function=validation_model.submit_solution,
+        task=validation_model.task,
+        functional_templates=functionals,
+        terminal_templates=terminals,
+        population_size=100,
+        database_connector=database_connector
+    )
+
+    population.evolve(bacterial_programming)
 
 
 Pool(PROCESS_POOL_SIZE).map(run, range(RUN_COUNT))

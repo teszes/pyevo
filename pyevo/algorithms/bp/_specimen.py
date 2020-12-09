@@ -5,10 +5,10 @@ from copy import deepcopy
 from operator import attrgetter
 from random import choice, randint
 
-from pyevo.bp._specimen_strategies import TreeGenerator
+from pyevo.algorithms.bp import TreeGenerator
 
 
-class Specimen:
+class BacterialSpecimen:
     @property
     def fitness(self):
         self._fitness = self._fitness or self._fitness_function(self._root)

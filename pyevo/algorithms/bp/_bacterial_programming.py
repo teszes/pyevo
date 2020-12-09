@@ -1,6 +1,6 @@
 import logging
 
-from pyevo.bp._population_strategies import \
+from pyevo.algorithms.bp import \
     InitializationStrategy, TerminationStrategy, BacterialMutationStrategy, InfectionStrategy
 
 LOGGER = logging.getLogger("pyevo.bp")
@@ -14,11 +14,11 @@ class BacterialProgramming:
         return list(self._results)
 
     def __init__(self,
+                 population,
                  fitness_function,
                  task=None,
                  functionals: tuple = None,
                  terminals: tuple = None,
-                 initialization_strategy=InitializationStrategy(),
                  termination_strategy=TerminationStrategy(),
                  bacterial_mutation_strategy=BacterialMutationStrategy(),
                  infection_strategy=InfectionStrategy()):
@@ -32,17 +32,13 @@ class BacterialProgramming:
             LOGGER.critical("Tree can not be generated without nodes")
             raise ValueError("Tree can not be generated without nodes")
 
-        initialization_strategy.functionals = functionals
-        initialization_strategy.terminals = terminals
-        initialization_strategy.fitness_function = fitness_function
-        initialization_strategy.task = task
-        self._initialization_strategy = initialization_strategy
+        self._population = population
 
         self._termination_strategy = termination_strategy
         self._bacterial_mutation_strategy = bacterial_mutation_strategy
         self._infection_strategy = infection_strategy
 
-    def run(self):
+    def run(self, database_connection_string: str = None) -> None:
         LOGGER.info("Starting Bacterial Programming")
         population = self._initialization_strategy()
         while not self._termination_strategy(population, self._results):

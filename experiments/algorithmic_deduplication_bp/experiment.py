@@ -2,7 +2,7 @@ from functools import partial
 from multiprocessing import Pool
 
 from pyevo.gym import algorithmic_deduplication
-from pyevo.bp import bacterial_programming
+from pyevo.algorithms.bp import bacterial_programming
 
 PROCESS_POOL_SIZE = 6
 TASK_LENGTH = 10

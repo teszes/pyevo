@@ -1,7 +1,7 @@
 from logging import getLogger
 from random import choice, random
 
-from pyevo.bp._nodes import FunctionalNode, TerminalNode, Node
+from pyevo.algorithms.bp import FunctionalNode, TerminalNode, Node
 
 LOGGER = getLogger("pyevo.bp")
 
