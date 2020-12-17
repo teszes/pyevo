@@ -14,6 +14,17 @@ class Specimen:
         self._fitness = self._fitness or self._fitness_function(self._root)
         return self._fitness
 
+    def novelty(self, other_specimens: list):
+        def tree_depth(root):
+            if not root.children:
+                return 1
+            else:
+                return max(tree_depth(child) for child in root.children) + 1
+
+        own_depth = tree_depth(self.root)
+        avg_depth = sum(tree_depth(specimen.root) for specimen in other_specimens) / len(other_specimens)
+        return abs(own_depth - avg_depth)
+
     @property
     def family(self):
         return self._root.family

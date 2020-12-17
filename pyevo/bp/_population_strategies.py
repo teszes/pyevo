@@ -1,5 +1,7 @@
 from collections import namedtuple
 from datetime import datetime
+from heapq import nlargest
+from operator import attrgetter
 from logging import getLogger
 from random import choice
 from statistics import median
@@ -114,3 +116,17 @@ class MedianInfectionStrategy(InfectionStrategy):
             choice(bad_part).infect(choice(good_part))
 
         return population
+
+
+class NoveltySearchStrategy:
+    def __init__(self):
+        self.novel_specimens = list()
+
+    def __call__(self, population: Tuple[Specimen]) -> Tuple[Specimen]:
+        self.novel_specimens.extend(nlargest(int(len(population) / 10), population, key=lambda specimen: specimen.novelty(population)))
+        if len(self.novel_specimens) == len(population):
+            novel_specimens = self.novel_specimens
+            self.novel_specimens = list()
+            return tuple(novel_specimens)
+        else:
+            return population

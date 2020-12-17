@@ -17,8 +17,8 @@ validation_model = algorithmic_identity(task_length=TASK_LENGTH)
 
 terminals = tuple()
 for number in range(TASK_LENGTH):
-    terminal = partial(lambda task, _n: (task[_n], ), _n=number)
-    terminals += (terminal, )
+    terminal = partial(lambda task, _n: (task[_n],), _n=number)
+    terminals += (terminal,)
 
 functionals = (
     lambda task, children: tuple([y for x in children for y in x]),
@@ -39,4 +39,5 @@ def run(_):
     )
 
 
-Pool(PROCESS_POOL_SIZE).map(run, range(RUN_COUNT))
+for _ in range(RUN_COUNT):
+    run(_)

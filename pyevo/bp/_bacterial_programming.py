@@ -1,7 +1,7 @@
 import logging
 
 from pyevo.bp._population_strategies import \
-    InitializationStrategy, TerminationStrategy, BacterialMutationStrategy, InfectionStrategy
+    InitializationStrategy, TerminationStrategy, BacterialMutationStrategy, InfectionStrategy, NoveltySearchStrategy
 
 LOGGER = logging.getLogger("pyevo.bp")
 
@@ -21,6 +21,7 @@ class BacterialProgramming:
                  initialization_strategy=InitializationStrategy(),
                  termination_strategy=TerminationStrategy(),
                  bacterial_mutation_strategy=BacterialMutationStrategy(),
+                 novelty_search_strategy=NoveltySearchStrategy(),
                  infection_strategy=InfectionStrategy()):
 
         LOGGER.debug(
@@ -41,6 +42,7 @@ class BacterialProgramming:
         self._termination_strategy = termination_strategy
         self._bacterial_mutation_strategy = bacterial_mutation_strategy
         self._infection_strategy = infection_strategy
+        self._novelty_search_strategy = novelty_search_strategy
 
     def run(self):
         LOGGER.info("Starting Bacterial Programming")
@@ -52,5 +54,6 @@ class BacterialProgramming:
                 self._results[-1].avg_fitness,
                 self._results[-1].max_fitness
             ))
+            population = self._novelty_search_strategy(population)
             population = self._bacterial_mutation_strategy(population)
             population = self._infection_strategy(population)
