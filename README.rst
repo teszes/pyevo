@@ -35,4 +35,7 @@ Installation
 ------------------------------------------------------------------------------------------------------------------------
 Issues
 ------------------------------------------------------------------------------------------------------------------------
-Issues are listed on the GitHub issue tracker for the project.
+Issues are listed on the `GitHub issue tracker`_ for the project.
+
+.. _`GitHub issue tracker`:
+https://github.com/teszes/pyevo/issues
